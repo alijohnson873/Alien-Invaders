@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Let's Kill These Sleeping Aliens</title>
+    <style>
+      main {
+          color: white;
+        text-align: center;
+        font-family: sans-serif;
+        background-image: url("./space2.jpeg");
+        padding: 100px;
+        background-size: cover;
+        font-size: 1.5em;
+      }
+
+      section{
+          display: inline-block;
+          border: 3px solid rgb(214, 37, 119);
+          padding: 15px;
+          margin: 30px;
+          margin-bottom: 80px;
+          border-radius: 10px;
+      }
+
+      button{
+          font-size: 30px;
+          color: white;
+          background-color: red;
+          border: 3px solid white;
+          display: block;
+          margin: 20px;
+          margin: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>KILL 'EM WHILE THEY SOFTLY SLEEP</h1>
+      <h2>(They'd do it to you if they had the chance)</h2>
+
+    <section>
+        <h3>Mother Ship</h3>
+        <div id="motherShip">
+            <p>Number of Ships Left: 1</p>
+            <p>Hit Points: 100</p>
+        </div>
+    </section>
+    <section>
+        <h3>Defense Ship</h3>
+        <div id="defenseShip">
+            <p>Number of Ships Left: 5</p>
+            <p>Hit Points: 80</p>
+        </div>
+    </section>
+    <section>
+        <h3>Attack Ship</h3>
+        <div id="attackShip">
+            <p>Number of Ships Left: 8</p>
+            <p>Hit Points: 45</p>
+        </div>
+    </section>
+    <button id="attackButton">SHOOT THEM!!!!!</button>
+    </main>
+
+    <script>
+            const attackButton = document.getElementById("attackButton");
+            const motherDiv = document.getElementById("motherShip");
+            const defenseDiv = document.getElementById("defenseShip");
+            const attackDiv = document.getElementById("attackShip");
+            
+            const genRandomNumber = () => { return Math.floor(Math.random() * (3 - 1 + 1)) + 1; }
+            class spaceShip {
+                constructor(name, hitPoints, hitPointsReset, pointsLostOnHit, numberOfShips) {
+                    this.name = name;
+                    this.hitPoints = hitPoints;
+                    this.hitPointsReset = hitPointsReset;
+                    this.pointsLostOnHit = pointsLostOnHit;
+                    this.numberOfShips = numberOfShips;
+                }
+                hit() {
+                    this.hitPoints = this.hitPoints - this.pointsLostOnHit;
+                    if (this.hitPoints <= 0 && this.numberOfShips === 0) {
+                        this.hitPoints = 0;
+                        return alert(`AWESOME! All ${this.name}s have been destroyed`)
+                    } else if (this.hitPoints <= 0 && this.numberOfShips > 0) {
+                        this.numberOfShips--;
+                        this.hitPoints = this.hitPointsReset;
+                        alert(`BANG!...${this.name} has been destroyed`)
+                    }
+                }
+            };
+    
+        const motherShip = new spaceShip("Mother Ship", 100, 100, 9, 1);
+        const defenseShip = new spaceShip("Defense Ship", 80, 80, 10, 5);
+        const attackShip = new spaceShip("Attack Ship", 45, 45, 12, 8)
+    
+    
+         attackButton.addEventListener('click', ()=> {
+             let randomNum = genRandomNumber();
+             if (motherShip.numberOfShips === 0 && defenseShip.numberOfShips === 0  && attackShip.numberOfShips === 0 || motherShip.numberOfShips === 0){
+                 alert("YOU HAVE KILLED THEM ALL WELL DONE!!!")
+             }
+             else if (randomNum === 1 && motherShip.numberOfShips > 0){
+                motherShip.hit();
+                motherDiv.innerHTML = `<p>Number of Ships Left: ${motherShip.numberOfShips}</p> <p>Hit Points: ${motherShip.hitPoints}</p>`
+             } else if (randomNum === 2 && defenseShip.numberOfShips > 0) {
+                defenseShip.hit();
+                defenseDiv.innerHTML = `<p>Number of Ships Left: ${defenseShip.numberOfShips}</p> <p>Hit Points: ${defenseShip.hitPoints}</p>`
+             } else if (randomNum === 3 && attackShip.numberOfShips > 0) {
+                attackShip.hit();
+                attackDiv.innerHTML = `<p>Number of Ships Left: ${attackShip.numberOfShips}</p> <p>Hit Points: ${attackShip.hitPoints}</p>`}   
+         });  
+    
+    
+         const endGame = () => {
+             
+         }
+        </script>
+  </body>
+</html>
