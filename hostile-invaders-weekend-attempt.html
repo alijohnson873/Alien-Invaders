@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,47 +6,89 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Let's Kill These Sleeping Aliens</title>
     <style>
+      body {
+        text-align: center;
+        font-family: sans-serif;
+        background-image: url("./space2.jpeg");
+        padding: 50px;
+        color: white;
+        background-size: cover;
+      }
 
-        main{
-            text-align: center;
-        }
+      button {
+        margin: 20px;
+        color: white;
 
-        button{
-            margin: 20px;
-            color: white;
-            background-color: red;
-            padding: 20px;
-        }
+        padding: 20px;
+        font-size: 20px;
+      }
 
-    #shipCollection{
+      #killButton {
+        background-color: red;
+      }
+
+      #resetButton {
+        background-color: green;
+      }
+
+      h1 {
+        font-size: 3.5em;
+      }
+
+      h3{
+          padding-top: 20px;
+          /* margin: 0; */
+      }
+
+      #shipCollection {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
         align-items: flex-start;
-        border: 3px solid red;   
-    }
+        margin: 30px;
+        /* border: 3px solid red;    */
+      }
 
-    .ships{
-        background-color:blue;
+      .ship {
         display: inline-block;
-        width: auto;
         margin: 10px;
+        width: 150px;
         color: white;
-        border-radius: 30%;
+        border-radius: 50%;
         padding: 20px;
-    }
-
-    .ships p{
-        font-size: 2em;
-    }
+        text-transform: uppercase;
+     
     
+      }
+
+      .ship p {
+        font-size: 2.5em;
+        margin: 0;
+        padding-bottom: 20px;
+      }
+
+      .attack {
+        background-color: red;
+        border: 10px solid black;
+      }
+
+      .defense {
+        border: 10px solid black;
+        background-color: blue;
+      }
+
+      .mother {
+        background-color: black;
+        border: 10px solid gold;
+      }
     </style>
   </head>
   <body>
-    <header><h1>Alien Invasion</h1></header>
+    <header><h1>ALIEN INVASION</h1></header>
     <main>
       <div id="shipCollection"></div>
       <button id="killButton" onclick="shootOnButtonClick()">SHOOT!</button>
+      <button id="resetButton" onclick="resetOnButtonClick()">RESET</button>
     </main>
 
     <script>
@@ -64,8 +105,6 @@
       const defenseData = [5, "Defense Ship", 80, 10];
       const attackData = [8, "Attack Ship", 45, 12];
       const shipCollection = document.getElementById("shipCollection");
-      const killButton = document.getElementById('killButton')
-
       let spaceShipArr = [];
 
       const addShipsToArr = () => {
@@ -88,37 +127,53 @@
       const makeInnerHTML = () => {
         let HTML = "";
         for (let i = 0; i < spaceShipArr.length; i++) {
-          HTML += `<div class="ships"><h3> ${spaceShipArr[i].name} </h3><p>${spaceShipArr[i].hitPoints> 0 ? spaceShipArr[i].hitPoints: "DESTROYED" }</p></div>`;
+          HTML += `<div class="${spaceShipArr[i].name.toLowerCase()}"><h3> ${
+            spaceShipArr[i].name
+          } </h3><p>${spaceShipArr[i].hitPoints}</p></div>`;
         }
         return HTML;
       };
 
-      const getRandomNum = () =>{
-        return Math.floor(Math.random() * (spaceShipArr.length))
+      const getRandomNum = () => {
+        return Math.floor(Math.random() * spaceShipArr.length);
       };
 
+      const endGame = () => {
+        if (
+          spaceShipArr.map(e => e.name).indexOf("Mother Ship") == -1 ||
+          spaceShipArr.length === 0
+        ) {
+          alert("You've destroyed the aliens, well done!");
+          addShipsToArr();
+          shipCollection.innerHTML = makeInnerHTML();
+        }
+      };
+
+      const resetOnButtonClick = () => {
+        spaceShipArr = [];
+        addShipsToArr();
+        shipCollection.innerHTML = makeInnerHTML();
+      };
 
       addShipsToArr();
       shipCollection.innerHTML = makeInnerHTML();
 
-      const shootOnButtonClick =() => {
-            let randNum = getRandomNum();
-            spaceShipArr[randNum].hitPoints -= spaceShipArr[randNum].pointsLostOnHit;
-            
-            if (spaceShipArr[randNum].hitPoints <= 0) {
-                spaceShipArr.splice(randNum, 1);
-                shipCollection.innerHTML = makeInnerHTML();
-            } else {
-                shipCollection.innerHTML = makeInnerHTML();
-            }
-            endGame()
+      const shootOnButtonClick = () => {
+        let randNum = getRandomNum();
+        spaceShipArr[randNum].hitPoints -=
+          spaceShipArr[randNum].pointsLostOnHit;
+        if (spaceShipArr[randNum].hitPoints <= 0) {
+          spaceShipArr.splice(randNum, 1);
+          shipCollection.innerHTML = makeInnerHTML();
+        } else {
+          shipCollection.innerHTML = makeInnerHTML();
+        }
+        endGame();
       };
 
-      const endGame =() => {
-        return (spaceShipArr.map(e => e.name).indexOf('Mother Ship') == -1 || spaceShipArr.length === 0) 
-      }
+     
 
-
+      
     </script>
   </body>
 </html>
