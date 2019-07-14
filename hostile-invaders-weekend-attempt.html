@@ -97,19 +97,13 @@
         return Math.floor(Math.random() * (spaceShipArr.length))
       };
 
-      
 
       addShipsToArr();
       shipCollection.innerHTML = makeInnerHTML();
 
-
-    
-      
-
       const shootOnButtonClick =() => {
             let randNum = getRandomNum();
             spaceShipArr[randNum].hitPoints -= spaceShipArr[randNum].pointsLostOnHit;
-
             
             if (spaceShipArr[randNum].hitPoints <= 0) {
                 spaceShipArr.splice(randNum, 1);
@@ -117,8 +111,12 @@
             } else {
                 shipCollection.innerHTML = makeInnerHTML();
             }
-            
+            endGame()
       };
+
+      const endGame =() => {
+        return (spaceShipArr.map(e => e.name).indexOf('Mother Ship') == -1 || spaceShipArr.length === 0) 
+      }
 
 
     </script>
