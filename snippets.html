@@ -1,0 +1,220 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Let's Kill These Sleeping Aliens</title>
+    <style>
+      
+    </style>
+  </head>
+  <body>
+
+     
+    <script>
+    class SpaceShip {
+        constructor(name, hitPoints, pointsLostOnHit){
+            this.name = name;
+            this.hitPoints = hitPoints;
+            this.pointsLostOnHit = pointsLostOnHit;
+        }
+    }
+
+    let spaceShipArr = [];
+
+    const addShipsToArray = () => {
+        spaceShipArr.push( new SpaceShip("MotherShip", 100, 9) );
+
+        for (let i=0; i< 5; i++ ){
+           spaceShipArr.push( new SpaceShip("Defense Ship", 80, 10) )
+        }
+        for (let i=0; i< 8; i++ ){
+           spaceShipArr.push( new SpaceShip("Attack Ship", 45, 12) )
+        }
+
+        return spaceShipArr;
+    };
+
+     </script>
+  </body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Let's Kill These Sleeping Aliens</title>
+    <style>
+      body {
+        text-align: center;
+        font-family: sans-serif;
+        background-image: url("./space2.jpeg");
+        padding: 50px;
+        color: white;
+        background-size: cover;
+      }
+
+      button {
+        margin: 20px;
+        color: white;
+
+        padding: 20px;
+        font-size: 20px;
+      }
+
+      #killButton {
+        background-color: red;
+      }
+
+      #resetButton {
+        background-color: green;
+      }
+
+      h1 {
+        font-size: 3.5em;
+      }
+
+      h3{
+          padding-top: 20px;
+          /* margin: 0; */
+      }
+
+      #shipCollection {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin: 30px;
+        /* border: 3px solid red;    */
+      }
+
+      .ship {
+        display: inline-block;
+        margin: 10px;
+        width: 150px;
+        color: white;
+        border-radius: 50%;
+        padding: 20px;
+        text-transform: uppercase;
+     
+    
+      }
+
+      .ship p {
+        font-size: 2.5em;
+        margin: 0;
+        padding-bottom: 20px;
+      }
+
+      .attack {
+        background-color: red;
+        border: 10px solid black;
+      }
+
+      .defense {
+        border: 10px solid black;
+        background-color: blue;
+      }
+
+      .mother {
+        background-color: black;
+        border: 10px solid gold;
+      }
+    </style>
+  </head>
+  <body>
+    <header><h1>ALIEN INVASION</h1></header>
+    <main>
+      <div id="shipCollection"></div>
+      <button id="killButton" onclick="shootOnButtonClick()">SHOOT!</button>
+      <button id="resetButton" onclick="resetOnButtonClick()">RESET</button>
+    </main>
+
+    <script>
+      class SpaceShip {
+        constructor(name, hitPoints, pointsLostOnHit) {
+          this.name = name;
+          this.hitPoints = hitPoints;
+          this.pointsLostOnHit = pointsLostOnHit;
+        }
+      }
+
+      // Ship Array Data Key = [number of ships, name, hit points, points lost]
+      const motherData = [1, "Mother Ship", 100, 9];
+      const defenseData = [5, "Defense Ship", 80, 10];
+      const attackData = [8, "Attack Ship", 45, 12];
+      const shipCollection = document.getElementById("shipCollection");
+      let spaceShipArr = [];
+
+      const addShipsToArr = () => {
+        spaceShipArr.push(
+          new SpaceShip(motherData[1], motherData[2], motherData[3])
+        );
+        for (let i = 0; i < defenseData[0]; i++) {
+          spaceShipArr.push(
+            new SpaceShip(defenseData[1], defenseData[2], defenseData[3])
+          );
+        }
+        for (let i = 0; i < attackData[0]; i++) {
+          spaceShipArr.push(
+            new SpaceShip(attackData[1], attackData[2], attackData[3])
+          );
+        }
+        return spaceShipArr;
+      };
+
+      const makeInnerHTML = () => {
+        let HTML = "";
+        for (let i = 0; i < spaceShipArr.length; i++) {
+          HTML += `<div class="${spaceShipArr[i].name.toLowerCase()}"><h3> ${
+            spaceShipArr[i].name
+          } </h3><p>${spaceShipArr[i].hitPoints}</p></div>`;
+        }
+        return HTML;
+      };
+
+      const getRandomNum = () => {
+        return Math.floor(Math.random() * spaceShipArr.length);
+      };
+
+      const endGame = () => {
+        if (
+          spaceShipArr.map(e => e.name).indexOf("Mother Ship") == -1 ||
+          spaceShipArr.length === 0
+        ) {
+          alert("You've destroyed the aliens, well done!");
+          addShipsToArr();
+          shipCollection.innerHTML = makeInnerHTML();
+        }
+      };
+
+      const resetOnButtonClick = () => {
+        spaceShipArr = [];
+        addShipsToArr();
+        shipCollection.innerHTML = makeInnerHTML();
+      };
+
+      addShipsToArr();
+      shipCollection.innerHTML = makeInnerHTML();
+
+      const shootOnButtonClick = () => {
+        let randNum = getRandomNum();
+        spaceShipArr[randNum].hitPoints -=
+          spaceShipArr[randNum].pointsLostOnHit;
+        if (spaceShipArr[randNum].hitPoints <= 0) {
+          spaceShipArr.splice(randNum, 1);
+          shipCollection.innerHTML = makeInnerHTML();
+        } else {
+          shipCollection.innerHTML = makeInnerHTML();
+        }
+        endGame();
+      };
+
+     //add class on each element and set timeout to that to create shot effects 
+
+      
+    </script>
+  </body>
+</html>
